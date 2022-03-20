@@ -1,44 +1,59 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
-const WebpackConfig = require('./webpack.config');
+const express = require('express')
+const bodyParser = require('body-parser')
+const webpack = require('webpack')
+const webpackDevMiddleware = require('webpack-dev-middleware')
+const webpackHotMiddleware = require('webpack-hot-middleware')
+const WebpackConfig = require('./webpack.config')
 
-const app = express();
-const compiler = webpack(WebpackConfig);
+const app = express()
+const compiler = webpack(WebpackConfig)
 
 app.use(webpackDevMiddleware(compiler, {
-  publicPath:'/_build_/',
-  stats:{
+  publicPath: '/_build_/',
+  stats: {
     colors: true,
     chunks: false
   }
 
 }))
-const router =express.Router();
+const router = express.Router()
 
-router.get('/simple/get',function(req, res) {
+router.get('/simple/get', function(req, res) {
   res.json({
-    msg:"hello world"
+    msg: 'hello world'
   })
 })
-router.get('/base/get',function(req, res) {
-  res.json(req.query);
+router.get('/base/get', function(req, res) {
+  res.json(req.query)
+})
+router.post('/base/post', function(req, res) {
+  res.json(req.body)
+})
+router.post('/base/buffer', function(req, res) {
+  let msg = []
+  req.on('data', (chunk) => {
+    if (chunk) {
+      msg.push(chunk)
+    }
+  })
+  req.on('end', () => {
+    let buf = Buffer.concat(msg)
+    res.json(buf.toString())
+  })
 })
 
-app.use(router);
+app.use(router)
 
-app.use(webpackHotMiddleware(compiler));
+app.use(webpackHotMiddleware(compiler))
 app.use(express.static(__dirname))
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 
-const  port = process.env.PORT ||8080
+const port = process.env.PORT || 8080
 
-module.exports = app.listen(port, ()=>{
-  console.log(`Server listening on port ${port}`);
+module.exports = app.listen(port, () => {
+  console.log(`Server listening on port ${port}`)
 })
 
 
