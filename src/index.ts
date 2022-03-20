@@ -2,11 +2,11 @@ import xhr from './xhr'
 import { buildURL } from './helpers/url'
 import { transformRequest } from './helpers/data'
 import { processHeaders } from './helpers/headers'
-import { AxiosRequestConfig } from './types'
+import { AxiosPromise, AxiosRequestConfig } from './types'
 
-function axios(config: AxiosRequestConfig) {
+function axios(config: AxiosRequestConfig): AxiosPromise {
   processConfig(config)
-  xhr(config)
+  return xhr(config)
 }
 
 export default axios
