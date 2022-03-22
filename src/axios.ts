@@ -1,6 +1,4 @@
-import axios from './axios'
-export * from './types'
-export default axios
+import xhr from './xhr'
 import { buildURL } from './helpers/url'
 import { transformRequest, transformResponse } from './helpers/data'
 import { processHeaders } from './helpers/headers'
@@ -12,6 +10,8 @@ function axios(config: AxiosRequestConfig): AxiosPromise {
     return transformResponseData(res)
   })
 }
+
+export default axios
 
 function processConfig(config: AxiosRequestConfig): void {
   config.url = transformUrl(config)
