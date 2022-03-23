@@ -1,5 +1,4 @@
-import axios from '../../src/index'
-
+import axios from '../../src/axios'
 axios({
   method: 'get',
   url: 'base/get',

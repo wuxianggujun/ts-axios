@@ -1,4 +1,6 @@
-import axios, { AxiosError } from '../../src/index'
+import axios from '../../src/axios'
+import { AxiosError } from '../../src/types'
+
 axios({
   method:'get',
   url:'error/get1'
